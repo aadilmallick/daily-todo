@@ -2,7 +2,6 @@ import "app/utils/style-utils/components.css";
 import { useApplicationStore } from "../hooks/useApplicationStore";
 import { useEffect, useState } from "react";
 import { Handler, Todo } from "app/background/controllers/storageController";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { cn } from "@/lib/utils";
 import { LucideXCircle } from "lucide-react";
 

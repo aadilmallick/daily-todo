@@ -18,7 +18,8 @@
     "48": "public/icon.png",
     "128": "public/icon.png"
   },
-  "permissions": ["storage", "alarms"],
+  "permissions": ["storage"],
+  "optional_permissions": ["notifications", "alarms"],
   "options_page": "src/options/options.html",
   "background": {
     "service_worker": "src/background/background.ts",
