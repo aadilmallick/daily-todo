@@ -33,4 +33,10 @@ export class Handler {
     const updatedTodos = todos.map((t) => (t.id === todo.id ? todo : t));
     await appStorage.set("dailyTodos", updatedTodos);
   }
+
+  static async deleteTodo(id: string) {
+    const todos = await appStorage.get("dailyTodos");
+    const updatedTodos = todos.filter((t) => t.id !== id);
+    await appStorage.set("dailyTodos", updatedTodos);
+  }
 }
