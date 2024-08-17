@@ -1,6 +1,8 @@
 import { MessagesOneWay } from "app/utils/api/messages";
 
-export const tabPayloadChannel = new MessagesOneWay<{
-  tabId: number;
-  url: string;
-}>("tab-payload");
+export class MessageChannels {
+  static tabPayloadChannel = new MessagesOneWay<{
+    tabId: number;
+    url: string;
+  }>("tab-payload");
+}

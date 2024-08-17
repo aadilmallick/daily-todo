@@ -1,4 +1,6 @@
-import { injectRoot } from "app/utils/ReactUtils";
+import { createAppWithPageLoader } from "app/utils/ReactUtils";
 import { App } from "./App";
 
-injectRoot(<App />);
+createAppWithPageLoader(<App />, {
+  color: "blue",
+});

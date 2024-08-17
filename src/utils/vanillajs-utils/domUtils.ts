@@ -24,21 +24,23 @@ export class DOM {
     elements.forEach((el) => fragment.appendChild(el));
     container.appendChild(fragment);
   }
+
+  static setPrototypes() {
+    HTMLElement.prototype.$ = function (
+      this: HTMLElement,
+      selector: string
+    ): HTMLElement | null {
+      return this.querySelector(selector);
+    };
+
+    HTMLElement.prototype.$$ = function (
+      this: HTMLElement,
+      selector: string
+    ): NodeListOf<HTMLElement> {
+      return this.querySelectorAll(selector);
+    };
+  }
 }
-
-HTMLElement.prototype.$ = function (
-  this: HTMLElement,
-  selector: string
-): HTMLElement | null {
-  return this.querySelector(selector);
-};
-
-HTMLElement.prototype.$$ = function (
-  this: HTMLElement,
-  selector: string
-): NodeListOf<HTMLElement> {
-  return this.querySelectorAll(selector);
-};
 
 export function debounce<T extends (...args: any[]) => void>(
   callback: T,
@@ -102,7 +104,7 @@ export class CustomEventElementClass<T> {
   }
 }
 
-export class CSSVariablesManager {
+export class CSSVariablesManager<T = Record<string, any>> {
   constructor(private element: HTMLElement) {}
 
   private formatName(name: string) {
@@ -112,12 +114,12 @@ export class CSSVariablesManager {
     return `--${name}`;
   }
 
-  set(name: string, value: string) {
-    this.element.style.setProperty(`--${this.formatName(name)}`, value);
+  set(name: keyof T, value: string) {
+    this.element.style.setProperty(this.formatName(name as string), value);
   }
 
-  get(name: string) {
-    return this.element.style.getPropertyValue(`--${this.formatName(name)}`);
+  get(name: keyof T) {
+    return this.element.style.getPropertyValue(this.formatName(name as string));
   }
 }
 
@@ -130,5 +132,30 @@ export class AbortControllerManager {
 
   abort() {
     this.controller.abort();
+  }
+}
+
+export class LocalStorageBrowser<T extends Record<string, any>> {
+  constructor(private prefix: string = "") {}
+
+  private getKey(key: keyof T & string): string {
+    return this.prefix + key;
+  }
+
+  public set<K extends keyof T & string>(key: K, value: T[K]): void {
+    window.localStorage.setItem(this.getKey(key), JSON.stringify(value));
+  }
+
+  public get<K extends keyof T & string>(key: K): T[K] | null {
+    const item = window.localStorage.getItem(this.getKey(key));
+    return item ? JSON.parse(item) : null;
+  }
+
+  public removeItem(key: keyof T & string): void {
+    window.localStorage.removeItem(this.getKey(key));
+  }
+
+  public clear(): void {
+    window.localStorage.clear();
   }
 }

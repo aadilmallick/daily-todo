@@ -2,14 +2,23 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { LucideCheckSquare } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useApplicationStore } from "../hooks/useApplicationStore";
-import { Handler } from "app/background/controllers/storageController";
+import { StorageHandler } from "app/background/controllers/storageController";
+import { getButtonAccessibilityProps } from "app/utils/projectUtils";
 
 const AddTodo = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [newTodo, setNewTodo] = useState("");
   const { addTodo } = useApplicationStore();
+  const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    if (isAdding) {
+      ref.current?.focus();
+    }
+  }, [isAdding, ref]);
 
   // pushes changes to state and backend
   async function onAddTodo() {
@@ -20,7 +29,8 @@ const AddTodo = () => {
       title: newTodo || "New Todo",
     };
     addTodo(todoToAdd);
-    await Handler.addTodo(todoToAdd);
+    await StorageHandler.addTodo(todoToAdd);
+    setNewTodo("");
     setIsAdding(false);
   }
 
@@ -32,19 +42,20 @@ const AddTodo = () => {
           <input
             type="text"
             className={cn(
-              "bg-none text-gray-600 flex-1 px-1 rounded",
+              "bg-none text-gray-600 flex-1 px-1 rounded text-ellipsis",
               "border-b-2 border-gray-300 focus:ring-0 focus:outline-none focus:bg-slate-200 placeholder:text-gray-400"
             )}
             placeholder="Add a todo..."
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
+            ref={ref}
+            maxLength={60}
           />
           <LucideCheckSquare
-            onClick={onAddTodo}
             size={20}
             color="gray"
-            role="button"
             className="cursor-pointer hover:opacity-75 transition-opacity"
+            {...getButtonAccessibilityProps(onAddTodo)}
           />
         </div>
       )}

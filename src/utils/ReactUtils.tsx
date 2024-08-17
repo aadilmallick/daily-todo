@@ -1,5 +1,7 @@
 import { createRoot } from "react-dom/client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import PermissionsModel from "./api/permissions";
+import PageLoader from "./vanillajs-utils/loaders/PageLoader";
 
 export function injectRoot(app: React.ReactNode) {
   const root = document.createElement("div");
@@ -7,6 +9,19 @@ export function injectRoot(app: React.ReactNode) {
   document.body.append(root);
 
   createRoot(root).render(<React.StrictMode>{app}</React.StrictMode>);
+}
+
+export function createAppWithPageLoader(
+  app: React.ReactNode,
+  options?: Partial<PageLoader["cssVariables"]>
+) {
+  async function createApp() {
+    injectRoot(app);
+  }
+
+  const pageLoader = new PageLoader(options);
+  createApp();
+  pageLoader.loadPage();
 }
 
 export function useObjectState<T extends Record<string, any>>(
@@ -37,4 +52,21 @@ export function useGetCurrentTab() {
   }, []);
 
   return { tab };
+}
+
+export function useGetOptionalPermissions(
+  optionalPermissions: PermissionsModel
+) {
+  const [permissionsGranted, setPermissionsGranted] = useState(false);
+
+  useEffect(() => {
+    async function checkPerms() {
+      const isGranted = await optionalPermissions.permissionIsGranted();
+      setPermissionsGranted(isGranted);
+    }
+
+    checkPerms();
+  }, []);
+
+  return { permissionsGranted, setPermissionsGranted };
 }

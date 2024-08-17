@@ -5,6 +5,11 @@ export default class PermissionsModel {
     return await chrome.permissions.request(this.permissions);
   }
 
+  async requestAndExecuteCallback(cb: (granted: boolean) => void) {
+    const isGranted = await chrome.permissions.request(this.permissions);
+    cb(isGranted);
+  }
+
   async permissionIsGranted() {
     return await chrome.permissions.contains(this.permissions);
   }

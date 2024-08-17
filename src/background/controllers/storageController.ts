@@ -7,7 +7,6 @@ export interface Todo {
 }
 
 interface History {
-  id: string;
   date: string;
   todosFraction: `${number}/${number}`;
 }
@@ -18,7 +17,7 @@ export const appStorage = new LocalStorage({
 });
 
 // define static methods here
-export class Handler {
+export class StorageHandler {
   static async addTodo(todo: Todo) {
     const todos = await appStorage.get("dailyTodos");
     await appStorage.set("dailyTodos", [...todos, todo]);
@@ -38,5 +37,14 @@ export class Handler {
     const todos = await appStorage.get("dailyTodos");
     const updatedTodos = todos.filter((t) => t.id !== id);
     await appStorage.set("dailyTodos", updatedTodos);
+  }
+
+  static async resetTodos() {
+    await appStorage.set("dailyTodos", []);
+  }
+
+  static async addHistory(history: History) {
+    const histories = await appStorage.get("history");
+    await appStorage.set("history", [...histories, history]);
   }
 }

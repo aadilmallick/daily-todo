@@ -29,3 +29,14 @@
     background-color: #3883a3;
   }
 }
+
+@mixin text-gradient($color1, $color2) {
+  background: $color1;
+  background: linear-gradient(to right, $color1 0%, $color2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-blue {
+  @include text-gradient(#37cfc7, #0072ff);
+}

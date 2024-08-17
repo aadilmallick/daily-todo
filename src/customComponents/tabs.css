@@ -1,0 +1,19 @@
+#tabs {
+  --tab-color: #6c6edd;
+  display: flex;
+  .tab {
+    padding: 1rem 0;
+    display: block;
+    flex: 1 0 50%;
+    text-align: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    &.active {
+      background-color: var(--tab-color);
+      color: white;
+      border-bottom: 2px solid var(--tab-color);
+    }
+  }
+}
