@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import React, { useEffect, useState } from "react";
 import PermissionsModel from "./api/permissions";
 import PageLoader from "./vanillajs-utils/loaders/PageLoader";
+import { ChromeStorage } from "./api/storage";
 
 export function injectRoot(app: React.ReactNode) {
   const root = document.createElement("div");
@@ -69,4 +70,32 @@ export function useGetOptionalPermissions(
   }, []);
 
   return { permissionsGranted, setPermissionsGranted };
+}
+
+export function useChromeStorage<T extends Record<string, any>>(
+  storage: ChromeStorage<T>,
+  key: keyof T
+) {
+  const [value, setValue] = React.useState<T[keyof T] | null>(null);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    async function getValue() {
+      setLoading(true);
+      const data = await storage.get(key);
+      setValue(data);
+      setLoading(false);
+    }
+
+    getValue();
+  }, []);
+
+  async function setValueAndStore(newValue: T[keyof T]) {
+    setLoading(true);
+    await storage.set(key, newValue);
+    setValue(newValue);
+    setLoading(false);
+  }
+
+  return { data: value, loading, setValueAndStore };
 }

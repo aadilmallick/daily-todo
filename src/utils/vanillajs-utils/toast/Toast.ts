@@ -6,6 +6,105 @@ type ToastManagerOptions = {
 export class ToastManager {
   private toastContainer?: HTMLElement;
   private options: ToastManagerOptions;
+  private toastsContainerId = `toasts-${crypto.randomUUID()}`;
+
+  ToastsCSS = `
+    #${this.toastsContainerId} {
+      position: fixed;
+      z-index: 9999 !important;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      &.bottom-left {
+        bottom: 0;
+        left: 0;
+      }
+
+      &.bottom-right {
+        bottom: 0;
+        right: 0;
+      }
+
+      &.top-left {
+        top: 0;
+        left: 0;
+      }
+
+      &.top-right {
+        top: 0;
+        right: 0;
+      }
+      .toast {
+        --color: #333;
+        background-color: white;
+        color: var(--color);
+        border: 1px solid #eee;
+        border-radius: 0.5rem;
+        min-width: 8rem;
+        max-width: 15rem;
+        word-wrap: break-word;
+        padding: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        position: relative;
+        animation: toast 0.4s ease-in-out;
+        overflow: hidden;
+        cursor: pointer;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 0.25rem;
+          background-color: var(--color);
+          animation: progress var(--toast-duration) linear both;
+          transform-origin: left;
+        }
+
+        &.toast-success {
+          --color: #2ecc71;
+        }
+
+        &.toast-warning {
+          --color: #f1c40f;
+        }
+
+        &.toast-danger {
+          --color: #e74c3c;
+        }
+
+        &.toast-info {
+          --color: #3498db;
+        }
+      }
+    }
+
+    @keyframes progress {
+      0% {
+        transform: scaleX(0);
+      }
+      100% {
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes toast {
+      0% {
+        transform: translateX(100px);
+        opacity: 0;
+      }
+      85% {
+        transform: translateX(-1rem);
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  `;
 
   public get containerElement() {
     return this.toastContainer;
@@ -15,12 +114,20 @@ export class ToastManager {
     this.options = { timeout: 3000, position: "bottom-right", ...options };
   }
 
+  private addToastStyles() {
+    const style = document.createElement("style");
+    style.innerHTML = this.ToastsCSS;
+    document.head.appendChild(style);
+  }
+
   setup() {
-    const element = document.getElementById("toasts");
+    const element = document.getElementById(this.toastsContainerId);
     if (element) return;
+
+    this.addToastStyles();
     const toastContainer = document.createElement("div");
-    toastContainer.id = "toasts";
-    toastContainer.classList.add(this.options.position!);
+    toastContainer.id = this.toastsContainerId;
+    toastContainer.classList.add(this.options?.position || "bottom-right");
 
     // add toast container to body
     document.body.appendChild(toastContainer);

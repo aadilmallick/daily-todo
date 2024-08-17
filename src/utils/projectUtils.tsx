@@ -24,3 +24,20 @@ export function getButtonAccessibilityProps<T>(cb: () => void) {
     role: "button",
   };
 }
+
+export class DateModel {
+  static convertTimeToDate(time: string) {
+    const date = new Date();
+    const [hours, minutes] = time.split(":");
+    date.setHours(parseInt(hours));
+    date.setMinutes(parseInt(minutes));
+    return date;
+  }
+
+  static convertDateToTime(dateMillis: number) {
+    const date = new Date(dateMillis);
+    const hours = `${date.getHours()}`.padStart(2, "0");
+    const minutes = `${date.getMinutes()}`.padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+}

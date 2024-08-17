@@ -145,10 +145,10 @@ export default class PageLoader {
   private hideLoader() {
     setTimeout(() => {
       this.loaderElement.classList.add("hide-loader");
-    }, 1000);
+    }, 500);
     setTimeout(() => {
       this.loaderElement.remove();
-    }, 2000);
+    }, 1500);
   }
 
   loadPage() {

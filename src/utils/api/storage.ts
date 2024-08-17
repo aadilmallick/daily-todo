@@ -38,7 +38,7 @@
 //   }
 // }
 
-abstract class Storage<T extends Record<string, any>> {
+export abstract class ChromeStorage<T extends Record<string, any>> {
   constructor(
     protected defaultData: T,
     protected storage:
@@ -111,13 +111,17 @@ abstract class Storage<T extends Record<string, any>> {
   }
 }
 
-export class SyncStorage<T extends Record<string, any>> extends Storage<T> {
+export class SyncStorage<
+  T extends Record<string, any>
+> extends ChromeStorage<T> {
   constructor(defaultData: T) {
     super(defaultData, chrome.storage.sync);
   }
 }
 
-export class LocalStorage<T extends Record<string, any>> extends Storage<T> {
+export class LocalStorage<
+  T extends Record<string, any>
+> extends ChromeStorage<T> {
   constructor(defaultData: T) {
     super(defaultData, chrome.storage.local);
   }

@@ -1,4 +1,4 @@
-import { LocalStorage } from "app/utils/api/storage";
+import { LocalStorage, SyncStorage } from "app/utils/api/storage";
 
 export interface Todo {
   id: string;
@@ -14,6 +14,10 @@ interface History {
 export const appStorage = new LocalStorage({
   dailyTodos: [] as Todo[],
   history: [] as History[],
+});
+
+export const appSettingsStorage = new SyncStorage({
+  notificationsTime: "22:30",
 });
 
 // define static methods here
@@ -46,5 +50,9 @@ export class StorageHandler {
   static async addHistory(history: History) {
     const histories = await appStorage.get("history");
     await appStorage.set("history", [...histories, history]);
+  }
+
+  static async saveNotificationsTime(time: string) {
+    await appSettingsStorage.set("notificationsTime", time);
   }
 }

@@ -20,3 +20,7 @@
 Changes to make:
 
 - [ ] Separate out classes from [dom utils](src\utils\domUtils.ts) to tree shake it and avoid pollution with the prototypes
+
+## material ui
+
+Here are the steps to install material ui date pickers
