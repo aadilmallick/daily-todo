@@ -1,5 +1,6 @@
 #tabs {
   --tab-color: #6c6edd;
+  --inactive-bg-color: none;
   display: flex;
   .tab {
     padding: 1rem 0;
@@ -7,13 +8,14 @@
     flex: 1 0 50%;
     text-align: center;
     cursor: pointer;
-    background: none;
+    background: var(--inactive-bg-color);
     border: none;
-
+    border-bottom: 4px solid transparent;
+    transition: background-color 0.3s;
     &.active {
       background-color: var(--tab-color);
       color: white;
-      border-bottom: 2px solid var(--tab-color);
+      border-bottom: 4px solid black;
     }
   }
 }

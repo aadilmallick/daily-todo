@@ -166,7 +166,7 @@ export class ToastManager {
 
 class Toast {
   public element: HTMLElement;
-  private timeoutId: number | null = null;
+  private timeoutId: NodeJS.Timeout | null = null;
   private duration: number;
   constructor({
     message,

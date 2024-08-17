@@ -72,11 +72,11 @@ export function useGetOptionalPermissions(
   return { permissionsGranted, setPermissionsGranted };
 }
 
-export function useChromeStorage<T extends Record<string, any>>(
-  storage: ChromeStorage<T>,
-  key: keyof T
-) {
-  const [value, setValue] = React.useState<T[keyof T] | null>(null);
+export function useChromeStorage<
+  T extends Record<string, any>,
+  K extends keyof T
+>(storage: ChromeStorage<T>, key: K) {
+  const [value, setValue] = React.useState<T[K] | null>(null);
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
@@ -90,7 +90,7 @@ export function useChromeStorage<T extends Record<string, any>>(
     getValue();
   }, []);
 
-  async function setValueAndStore(newValue: T[keyof T]) {
+  async function setValueAndStore(newValue: T[K]) {
     setLoading(true);
     await storage.set(key, newValue);
     setValue(newValue);

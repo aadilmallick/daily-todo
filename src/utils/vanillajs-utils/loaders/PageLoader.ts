@@ -97,7 +97,6 @@ export default class PageLoader {
 
   constructor(options?: Partial<PageLoader["cssVariables"]>) {
     this.handleOptions(options);
-    this.handleBodyUnflashedStyles();
     let loaderElement = document.querySelector<HTMLDivElement>(
       this.loaderContainerSelector
     );
@@ -122,11 +121,6 @@ export default class PageLoader {
       options.loaderBackground &&
         (this.cssVariables.loaderBackground = options.loaderBackground);
     }
-  }
-
-  private handleBodyUnflashedStyles() {
-    const bodyColor = this.cssVariables.loaderBackground;
-    document.documentElement.style.backgroundColor = bodyColor;
   }
 
   private injectLoader() {

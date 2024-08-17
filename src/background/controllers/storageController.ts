@@ -6,7 +6,7 @@ export interface Todo {
   completed: boolean;
 }
 
-interface History {
+export interface History {
   date: string;
   todosFraction: `${number}/${number}`;
 }
