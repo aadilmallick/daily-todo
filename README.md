@@ -16,11 +16,13 @@
 - Custom components: need to add back custom components like Modal and tAB
 - [components.scss](src\utils\style-utils\components.scss): add new styles
 - [react utils](src\utils\ReactUtils.tsx): add new hook for permissions
+- Made changes to toast manager
+- Created Page Loader
 
 Changes to make:
 
 - [ ] Separate out classes from [dom utils](src\utils\domUtils.ts) to tree shake it and avoid pollution with the prototypes
 
-## material ui
+## daisy ui
 
-Here are the steps to install material ui date pickers
+1. `npm i -D daisyui@latest`

@@ -1,6 +1,7 @@
 import Tabs from "app/customComponents/Tabs";
 import PageContainer from "../components/PageContainer";
 import HistoryList from "../components/HistoryList";
+import Stats from "../components/Stats";
 
 const History = () => {
   return (
@@ -13,7 +14,7 @@ const History = () => {
           },
           {
             tab: "Stats",
-            element: <div>Stats</div>,
+            element: <Stats />,
           },
         ]}
         inactiveTabColor="rgba(65, 99, 210, 0.5)"

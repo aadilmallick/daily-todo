@@ -19,16 +19,30 @@ Runtime.onInstall({
     await appStorage.setup();
     await appSettingsStorage.setup();
     console.log("Extension loaded");
-    console.log(await appStorage.getAll());
-    console.log(await appSettingsStorage.getAll());
   },
 });
 
-reminderAlarm.onTriggered(() => {
-  console.log("Alarm triggered");
-  NotificationModel.showBasicNotification({
-    title: "Daily Reminder",
-    message: "Don't forget to finish your todos for today!",
-    iconPath: "public/icon.png",
-  });
+chrome.permissions.onAdded.addListener((permissions) => {
+  console.log("Permissions added", permissions);
+  setupAlarmListener();
 });
+
+// Function to set up the alarm listener if the API is available
+function setupAlarmListener() {
+  if (chrome.alarms) {
+    console.log("chrome.alarms API is available.");
+    reminderAlarm.onTriggered(() => {
+      console.log("Alarm triggered");
+      NotificationModel.showBasicNotification({
+        title: "Daily Reminder",
+        message: "Don't forget to finish your todos for today!",
+        iconPath: "/icon.png",
+      });
+    });
+  } else {
+    console.warn("chrome.alarms API is not available.");
+  }
+}
+
+// Initial setup: attempt to set up the alarm listener
+// setupAlarmListener();

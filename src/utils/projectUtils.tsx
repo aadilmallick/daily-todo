@@ -7,7 +7,7 @@ export function getColor(todosCompleted: number, totalTodos: number) {
   const percentage = getPercentage(todosCompleted, totalTodos);
   if (percentage === 0) return "gray";
   if (percentage < 50) return "red";
-  if (percentage < 90) return "yellow";
+  if (percentage < 90) return "orange";
   if (percentage < 100) return "green";
   return "steelblue";
 }

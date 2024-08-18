@@ -5,7 +5,6 @@ export class ChromeAlarm {
   constructor(private alarmName: string) {}
 
   async createAlarm(alarmInfo: chrome.alarms.AlarmCreateInfo) {
-    await chrome.alarms.clear(this.alarmName);
     await chrome.alarms.create(this.alarmName, alarmInfo);
   }
 
@@ -37,16 +36,12 @@ export class ChromeAlarm {
     return alarmCB;
   }
 
-  static removeListener = chrome.alarms.onAlarm.removeListener.bind(
-    chrome.alarms.onAlarm
-  );
-
   /**
    *
    * @returns wasCleared: True if the alarm was successfully cleared, false otherwise.
    */
   async clearAlarm() {
-    // this.alarmCB && chrome.alarms.onAlarm.removeListener(this.alarmCB);
+    this.alarmCB && chrome.alarms.onAlarm.removeListener(this.alarmCB);
     return await chrome.alarms.clear(this.alarmName);
   }
 }

@@ -32,21 +32,21 @@ export default class NotificationModel {
   }
 }
 
-export class NotificationAPI {
-  static show = chrome.notifications.create.bind(chrome.notifications);
+// export class NotificationAPI {
+//   static show = chrome.notifications.create.bind(chrome.notifications);
 
-  static onClick = chrome.notifications.onClicked.addListener.bind(
-    chrome.notifications.onClicked
-  );
+//   static onClick = chrome.notifications.onClicked.addListener.bind(
+//     chrome.notifications.onClicked
+//   );
 
-  static onClose = chrome.notifications.onClosed.addListener.bind(
-    chrome.notifications.onClosed
-  );
+//   static onClose = chrome.notifications.onClosed.addListener.bind(
+//     chrome.notifications.onClosed
+//   );
 
-  static onShowSettings = chrome.notifications.onShowSettings.addListener.bind(
-    chrome.notifications.onShowSettings
-  );
-}
+//   static onShowSettings = chrome.notifications.onShowSettings.addListener.bind(
+//     chrome.notifications.onShowSettings
+//   );
+// }
 
 /**
  * Examples

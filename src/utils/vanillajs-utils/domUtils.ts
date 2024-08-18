@@ -104,7 +104,7 @@ export class CustomEventElementClass<T> {
   }
 }
 
-export class CSSVariablesManager<T = Record<string, any>> {
+export class CSSVariablesManager<T = Record<string, string>> {
   constructor(private element: HTMLElement) {}
 
   private formatName(name: string) {

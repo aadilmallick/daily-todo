@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PermissionsModel from "./api/permissions";
 import PageLoader from "./vanillajs-utils/loaders/PageLoader";
 import { ChromeStorage } from "./api/storage";
+import { CSSVariablesManager } from "./vanillajs-utils/domUtils";
 
 export function injectRoot(app: React.ReactNode) {
   const root = document.createElement("div");
@@ -98,4 +99,22 @@ export function useChromeStorage<
   }
 
   return { data: value, loading, setValueAndStore };
+}
+
+export function useCssVariables<
+  T extends HTMLElement = HTMLElement,
+  V extends Record<string, string> = Record<string, string>
+>(variables: V) {
+  const ref = React.useRef<T>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      const manager = new CSSVariablesManager<V>(ref.current);
+      for (const [key, value] of Object.entries(variables)) {
+        manager.set(key, value);
+      }
+    }
+  }, [ref, variables]);
+
+  return { ref };
 }
